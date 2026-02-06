@@ -3,7 +3,6 @@ const path = require("path");
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const { MongoClient } = require("mongodb");
 
 const productRoutes = require("./routes/products");
 const authRoutes = require("./routes/auth");
@@ -26,14 +25,5 @@ app.use((req, res, next) => {
 
 app.use("/products", productRoutes);
 app.use("/", authRoutes);
-
-MongoClient.connect(process.env.MONGODB_URI)
-  .then((client) => {
-    console.log("Connected to MongoDB");
-    client.close();
-  })
-  .catch((err) => {
-    console.log(err);
-  });
 
 app.listen(3100);
