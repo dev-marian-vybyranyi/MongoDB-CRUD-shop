@@ -1,21 +1,25 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { Component } from "react";
+import axios from "axios";
 
-import './Product.css';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
+import "./Product.css";
 
 class ProductPage extends Component {
   state = { isLoading: true, product: null };
 
   componentDidMount() {
     axios
-      .get('http://localhost:3100/products/' + this.props.match.params.id)
-      .then(productResponse => {
+      .get(BACKEND_URL + "/products/" + this.props.match.params.id)
+      .then((productResponse) => {
         this.setState({ isLoading: false, product: productResponse.data });
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({ isLoading: false });
         console.log(err);
-        this.props.onError('Loading the product failed. Please try again later');
+        this.props.onError(
+          "Loading the product failed. Please try again later",
+        );
       });
   }
 
@@ -30,7 +34,7 @@ class ProductPage extends Component {
           <div
             className="product-page__image"
             style={{
-              backgroundImage: "url('" + this.state.product.image + "')"
+              backgroundImage: "url('" + this.state.product.image + "')",
             }}
           />
           <p>{this.state.product.description}</p>
