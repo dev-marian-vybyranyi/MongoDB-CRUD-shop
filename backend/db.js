@@ -1,32 +1,35 @@
-const mongodb = require('mongodb');
+const mongodb = require("mongodb");
 
 const MongoClient = mongodb.MongoClient;
 
 let _db;
 
-const initDb = callback => {
+const initDb = (callback) => {
   if (_db) {
-    console.log('Database is already initialized!');
+    console.log("Database is already initialized!");
     return callback(null, _db);
   }
-  MongoClient.connect(process.env.MONGODB_URL)
-    .then(client => {
+  MongoClient.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+    .then((client) => {
       _db = client;
       callback(null, _db);
     })
-    .catch(err => {
+    .catch((err) => {
       callback(err);
     });
 };
 
 const getDb = () => {
   if (!_db) {
-    throw Error('Database not initialzed');
+    throw Error("Database not initialzed");
   }
   return _db;
 };
 
 module.exports = {
   initDb,
-  getDb
+  getDb,
 };
